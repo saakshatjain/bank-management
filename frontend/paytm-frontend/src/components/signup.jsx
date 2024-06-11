@@ -9,7 +9,7 @@ export default function Signup() {
     const navigate = useNavigate();
     
     async function authorize() {
-        const resp = await fetch("localhost:3000/api/v1/signup", {
+        const resp = await fetch("http://localhost:3000/api/v1/user/signup", {
             method:"POST",
             body:JSON.stringify({
                 "firstname" : name,
@@ -26,7 +26,7 @@ export default function Signup() {
             navigate("/dashboard");
             return;
         }
-        
+
     }
     return <div>
     First Name<input type="text" onChange={(e)=> setname(e.target.value)}></input>
