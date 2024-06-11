@@ -1,12 +1,19 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
+
 export default function Signup() {
     const [name , setname] = useState('');
     const [lastname , setlastname] = useState('');
     const [username , setusername] = useState('');
     const [password , setpassword] = useState('');
+    const [error,seterror]=useState('');
     const navigate = useNavigate();
+
+    function movetosignin() {
+        navigate("/signin");
+        return;
+    }
     
     async function authorize() {
         const resp = await fetch("http://localhost:3000/api/v1/user/signup", {
@@ -27,6 +34,10 @@ export default function Signup() {
             return;
         }
 
+        const data = await resp.json();
+        seterror(data["message"]);
+
+
     }
     return <div>
     First Name<input type="text" onChange={(e)=> setname(e.target.value)}></input>
@@ -39,8 +50,10 @@ export default function Signup() {
     <br></br>
     <button onClick={authorize}>Sign up</button>
     <br></br>
-    <p>Already have an account? </p>
-    <button> Sign In</button>
+    Already have an account?
+    <button onClick={movetosignin}>Sign In</button>
+     <br></br>
+    <h4>{error}</h4>
 
     </div>
 }
