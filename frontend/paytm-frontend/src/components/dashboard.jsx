@@ -7,13 +7,8 @@ export default function Dashboard() {
     
     const [balance, setBalance] = useState(0);
     const [name, setName] = useState('');
-    const [filter, setFilter]= useState('');
-    const [user,setusers]=useState([]);
-
-
-    function Transfer(id) {
-        
-    }
+    const [filter, setFilter] = useState('');
+    const [user, setUsers] = useState([]);
 
     useEffect(() => {
         if (!jwt) {
@@ -24,21 +19,19 @@ export default function Dashboard() {
     }, [jwt, balance]);
 
     useEffect(() => {
-        calllbulk();
-    },[filter])
+        callBulk();
+    }, [filter]);
 
-    async function calllbulk() {
-        const resp=await fetch(`http://localhost:3000/api/v1/user/bulk?filter=${filter}`);
+    async function callBulk() {
+        const resp = await fetch(`http://localhost:3000/api/v1/user/bulk?filter=${filter}`);
         if (resp.ok) {
             const data = await resp.json();
             console.log(data);
-            setusers(data.user);
+            setUsers(data.user);
+        } else {
+            console.log("Couldn't fetch API");
         }
-        else {
-            console.log("couldn fetch api");
-        }
-     }
-
+    }
 
     async function checkjwt() {
         try {
@@ -62,26 +55,46 @@ export default function Dashboard() {
         }
     }
 
-    {console.log(user);}
-
     return (
         <div>
             <h1>Welcome to our bank</h1>
             <h2>Hello {name}</h2>
             <p>Your balance is: ${balance}</p>
-            <input type ="text" placeholder="Filter" onChange = {(e)=> setFilter(e.target.value)}></input>
-             {user.map(users => (
-                <Userbox key ={user._id} id={users._id} firstname={users.firstname} lastname={users.lastname}></Userbox>
-             ))}
+            <input type="text" placeholder="Filter" onChange={(e) => setFilter(e.target.value)} />
+            {user.map(user => (
+                <Userbox 
+                    key={user._id} 
+                    id={user._id} 
+                    firstname={user.firstname} 
+                    lastname={user.lastname} 
+                />
+            ))}
         </div>
     );
 }
 
+function Userbox({ firstname, lastname, id }) {
+    const navigate2 = useNavigate();
 
-function Userbox({firstname,lastname,id}) {
-    return <div style={{display:"flex"}}>
-    <h3>{firstname} {lastname} </h3>
-    <button style={{height:"20px" , marginLeft:"3px"}}>Send Money</button>
-    </div>
+    const handleTransfer = () => {
+        navigate2("/transfer", {
+            state: {
+                firstname: firstname,
+                lastname: lastname,
+                id: id,
+            }
+        });
+    };
+
+    return (
+        <div style={{ display: "flex" }}>
+            <h3>{firstname} {lastname}</h3>
+            <button 
+                style={{ height: "20px", marginLeft: "3px" }} 
+                onClick={handleTransfer}
+            >
+                Send Money
+            </button>
+        </div>
+    );
 }
-

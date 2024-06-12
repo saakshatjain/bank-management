@@ -6,6 +6,7 @@ import Signup  from './components/signup';
 import Signin from './components/signin';
 import './App.css'
 import Dashboard from './components/dashboard';
+import Transfer from './components/transfer';
 
 function App() {
   return <>
@@ -14,6 +15,7 @@ function App() {
           <Route path="/signup"  element = {<Signup></Signup>}></Route>
           <Route path="/signin" element= {<Signin></Signin>}></Route>
           <Route path="/dashboard" element = {<Dashboard></Dashboard>}></Route>
+          <Route path="/transfer" element = {<Transfer></Transfer>}></Route>
        </Routes>
      </BrowserRouter>
   </>
