@@ -9,6 +9,7 @@ export default function Dashboard() {
     const [name, setName] = useState('');
     const [filter, setFilter] = useState('');
     const [user, setUsers] = useState([]);
+    const [signed , setsigned]=useState(true);
 
     useEffect(() => {
         if (!jwt) {
@@ -21,6 +22,13 @@ export default function Dashboard() {
     useEffect(() => {
         callBulk();
     }, [filter]);
+
+    
+    function logout() {
+        localStorage.removeItem('jwt');
+        navigate("/signin");
+        return;
+    }
 
     async function callBulk() {
         const resp = await fetch(`http://localhost:3000/api/v1/user/bulk?filter=${filter}`);
@@ -58,7 +66,10 @@ export default function Dashboard() {
     return (
         <div>
             <h1>Welcome to our bank</h1>
+            <div style={{display : "flex"}}>
             <h2>Hello {name}</h2>
+            <button style={{height : "30px" , marginLeft:"300px" , position:"absolute"}} onClick={logout}>Logout</button>
+            </div>
             <p>Your balance is: ${balance}</p>
             <input type="text" placeholder="Filter" onChange={(e) => setFilter(e.target.value)} />
             {user.map(user => (
@@ -98,3 +109,4 @@ function Userbox({ firstname, lastname, id }) {
         </div>
     );
 }
+
