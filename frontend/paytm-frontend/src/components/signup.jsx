@@ -30,6 +30,8 @@ export default function Signup() {
         })
 
         if (resp.status==200) {
+            const jwt=res.token;
+            localStorage.setItem('jwt',jwt);
             navigate("/dashboard");
             return;
         }

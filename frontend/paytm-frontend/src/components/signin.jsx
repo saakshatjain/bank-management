@@ -23,8 +23,11 @@ export default function Signin() {
                 "content-type" : "application/json"
             }
         })
-
+        
         if (res.status==200) {
+            const data = await res.json();
+            const jwt=data.token;
+            localStorage.setItem('jwt',jwt);
             navigate("/dashboard");
             return;
         }
