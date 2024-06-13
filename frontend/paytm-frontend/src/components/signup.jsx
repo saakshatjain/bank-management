@@ -42,7 +42,7 @@ export default function Signup() {
 
 
     }
-    return <div className="bg-blue-200">
+    return <div className="min-h-screen bg-blue-100 flex items-center justify-center">
        <div className="max-w-md mx-auto p-8 bg-gray-100 shadow-md rounded-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
         <label className="block text-gray-700">First Name</label>
