@@ -5,6 +5,7 @@ export default function Transfer() {
   const location = useLocation();
   const navigate = useNavigate();
   const jwt = localStorage.getItem('jwt');
+  const [buttonstate,setbuttonstate]=useState(true);
 
   useEffect(() => {
     if (!jwt) {
@@ -16,7 +17,7 @@ export default function Transfer() {
 
   if (!firstname) {
     navigate("/dashboard");
-    return null; // Added return null to handle redirect
+    return null;
   }
 
   const [amount, setAmount] = useState(0);
@@ -24,6 +25,7 @@ export default function Transfer() {
   const amount2 = parseFloat(amount);
 
   const handleTransfer = async () => {
+    setbuttonstate(false);
     const resps = await fetch("http://localhost:3000/api/v1/account/transfer", {
       method: "POST",
       body: JSON.stringify({
@@ -59,14 +61,14 @@ export default function Transfer() {
           className="w-full px-4 py-2 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button
-          onClick={handleTransfer}
-          className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors mb-4"
+          onClick={handleTransfer}  disabled={!buttonstate}
+          className={`w-full py-2 text-white rounded-md transition-colors mb-4 ${buttonstate==false ? 'bg-gray-500 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'}`}
         >
           Transfer
         </button>
         <h3 className="text-lg text-center text-red-500 mb-4">{message}</h3>
         <button
-          onClick={back}
+          onClick={back} 
           className="w-full py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors"
         >
           Go Back
